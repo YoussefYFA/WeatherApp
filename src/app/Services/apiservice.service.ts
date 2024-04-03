@@ -17,22 +17,31 @@ export class APIserviceService {
   HostHeaderValue= 'api.openweathermap.org'
 
   APIKeyHeaderName= 'WeatherAPIKEY'
-  APIKeyHeaderValue= 'f3c62032c630491cbb7ad5f30ecda711'
+  apikey= 'f3c62032c630491cbb7ad5f30ecda711'
+  daycount = '48';
 
   constructor(private http: HttpClient) { }
 
-  getWeather(city: string, units: string = 'metric') {
-    const apiKey = 'f3c62032c630491cbb7ad5f30ecda711';
-    const URL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=${units}`
-    return this.http.get<any>(URL);
-  }
+  // getWeather(city: string, units: string) {
+  //   const apikey = 'f3c62032c630491cbb7ad5f30ecda711';
+  //   const URL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=${units}`
+  //   return this.http.get<any>(URL);
+  // }
   
-  getForecast(city: string, units: string = 'metric') {
-    const apiKey = 'f3c62032c630491cbb7ad5f30ecda711';
-    const URL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=${units}`
+  getForecast(city: string, units: string) {
+    // const apikey= 'f3c62032c630491cbb7ad5f30ecda711'
+    // const daycount = '7';
+    const URL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&cnt=${this.daycount}&appid=${this.apikey}&units=${units}`
+  
     return this.http.get<any>(URL);
   }
 
+  getLocationWeather(latitude: number, longitude: number, units: string) {
+  
+    const URL = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&cnt=${this.daycount}&appid=${this.apikey}&units=${units}`;
+
+    return this.http.get<any>(URL);
+  }
 
 
 }
