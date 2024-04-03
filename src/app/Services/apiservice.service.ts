@@ -13,24 +13,14 @@ export class APIserviceService {
   // can be replaced by environments file
   weatherApiBaseUrl='http://api.openweathermap.org/data/2.5/forecast'
 
-  HostHeaderName= 'WeatherAPIHOST'
-  HostHeaderValue= 'api.openweathermap.org'
-
-  APIKeyHeaderName= 'WeatherAPIKEY'
-  apikey= 'f3c62032c630491cbb7ad5f30ecda711'
+  apikey= 'exampleAPIKey2'
   daycount = '48';
 
   constructor(private http: HttpClient) { }
 
-  // getWeather(city: string, units: string) {
-  //   const apikey = 'f3c62032c630491cbb7ad5f30ecda711';
-  //   const URL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=${units}`
-  //   return this.http.get<any>(URL);
-  // }
   
   getForecast(city: string, units: string) {
-    // const apikey= 'f3c62032c630491cbb7ad5f30ecda711'
-    // const daycount = '7';
+
     const URL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&cnt=${this.daycount}&appid=${this.apikey}&units=${units}`
   
     return this.http.get<any>(URL);
