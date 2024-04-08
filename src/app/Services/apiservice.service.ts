@@ -13,7 +13,7 @@ export class APIserviceService {
   // can be replaced by environments file
   weatherApiBaseUrl='http://api.openweathermap.org/data/2.5/forecast'
 
-  apikey= '649cf34e1f2b11f6449b8615be3a34e2'
+  apikey= 'InsertAPIKeyHere'
   daycount = '48';
 
   constructor(private http: HttpClient) { }
