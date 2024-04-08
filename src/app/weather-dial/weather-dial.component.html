@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" id="MainContainer">
   <section class="today-section">
     <!-- Upper section of the primary left-side panel -->
     <div class="search-area">
@@ -17,24 +17,21 @@
       >
         my_location
     </div>
-      <div
-        class="comparecity-button small-circle-button material-symbols-outlined"
-      >
-        add_circle
-  </div>
+    <div
+    title="Compare cities"
+    *ngIf="isWindowWidthAbove800() && secondCityVisible === false" class="compare-city-button small-circle-button material-symbols-outlined"
+    (click)="addSecondCity()"
+  >
+    add_circle
+</div>
     </div>
 
     <!-- Today's weather section -->
     <div class="weather-visualization">
-      <!-- <img src="assets/WeatherIcons/Sun icons2.png" /> -->
       <img [src]="'assets/WeatherIcons/' + getWeatherIcon(weatherData.list[0].weather[0].main) + '.png'" />
-      <!-- <img src="assets\WeatherIcons\Sun icons2.png" /> -->
-      <!-- <img src="assets\WeatherIcons\Sun icons2.png" *ngIf {{weatherData.weather.main = Sunny}}>
-      <img src="assets\WeatherIcons\Cloud icons2.png" *ngIf {{weatherData.weather.main = Cloudy}}> -->
     </div>
     <div class="main-info-container">
-      <h1 class="temp-h1">{{ weatherData.list[0].main.temp | number: "1.0-0" }}°C</h1>
-      <!-- <h1 class="temp-h1">{{weatherData.main.temp}}°C</h1> -->
+      <h1 class="temp-h1">{{ weatherData.list[0].main.temp | number: "1.0-0" }}°{{ units === 'metric' ? 'C' : 'F' }}</h1>
       <h1 class="city-h1">{{ city }}</h1>
       <h3>{{ weatherData.list[0].dt_txt | date: 'EEEE, h a' }}</h3>
       
@@ -53,7 +50,7 @@
             <img src="assets/WeatherIcons/Cold Temperature Icons2.png" />
             <span>Min</span>
           </div>
-          <div class="info-block-value">{{ weatherData.list[0].main.temp_min | number: "1.0-0" }}°C</div>
+          <div class="info-block-value">{{ weatherData.list[0].main.temp_min | number: "1.0-0" }}°{{ units === 'metric' ? 'C' : 'F' }}</div>
         </div>
 
         <!-- Maximum temp block -->
@@ -62,7 +59,7 @@
             <img src="assets/WeatherIcons/Hot Temperature Icons2.png" />
             <span>Max</span>
           </div>
-          <div class="info-block-value">{{ weatherData.list[0].main.temp_max | number: "1.0-0"}}°C</div>
+          <div class="info-block-value">{{ weatherData.list[0].main.temp_max | number: "1.0-0"}}°{{ units === 'metric' ? 'C' : 'F' }}</div>
         </div>
 
         <!-- Humidity block
@@ -86,46 +83,114 @@
     </div>
   </section>
 
+
+  <!-- 2nd Today Section -->
+  <section class="today-section second-today-section hidden">
+    <!-- Upper section of the primary left-side panel -->
+    <div class="search-area">
+      <div class="search-box">
+        <span class="search-icon material-symbols-outlined">search</span>
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Search cities..."
+          [(ngModel)]="searchValue2"
+          (keyup.enter)="getWeatherBySearch2(searchValue2)"
+        />
+      </div>
+      <div
+        class="mylocation-button small-circle-button material-symbols-outlined" (click)="getWeatherByLocation2()"
+      >
+        my_location
+    </div>
+      <div
+        class="compare-city-button small-circle-button material-symbols-outlined"
+        (click)="removeSecondCity()"
+      >
+        Cancel
+  </div>
+    </div>
+
+    <!-- Today's weather section -->
+    <div class="weather-visualization">
+      <img [src]="'assets/WeatherIcons/' + getWeatherIcon(weatherData2.list[0].weather[0].main) + '.png'" />
+    </div>
+    <div class="main-info-container">
+      <h1 class="temp-h1">{{ weatherData2.list[0].main.temp | number: "1.0-0" }}°{{ units === 'metric' ? 'C' : 'F' }}</h1>
+      <h1 class="city-h1">{{ city2 }}</h1>
+      <h3>{{ weatherData2.list[0].dt_txt | date: 'EEEE, h a' }}</h3>
+      
+      <br />
+      <hr class="rounded" />
+    </div>
+
+
+    <!-- Lower section of the card -->
+    <div class="lower-data">
+      <h4 class="more-info-label">{{weatherData2.list[0].weather[0].main}}</h4>
+      <div class="more-info-container">
+        <!-- Minimum temp block -->
+        <div class="info-block">
+          <div class="info-block-label">
+            <img src="assets/WeatherIcons/Cold Temperature Icons2.png" />
+            <span>Min</span>
+          </div>
+          <div class="info-block-value">{{ weatherData2.list[0].main.temp_min | number: "1.0-0" }}°{{ units === 'metric' ? 'C' : 'F' }}</div>
+        </div>
+
+        <!-- Maximum temp block -->
+        <div class="info-block">
+          <div class="info-block-label">
+            <img src="assets/WeatherIcons/Hot Temperature Icons2.png" />
+            <span>Max</span>
+          </div>
+          <div class="info-block-value">{{ weatherData2.list[0].main.temp_max | number: "1.0-0"}}°{{ units === 'metric' ? 'C' : 'F' }}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
   <section class="week-section">
     <div class="week-section-header">
       <!-- this needs to eventually become a tab system with Today and Week
     <h1 class="h1-titles">Today</h1> -->
       <h1 class="h1-titles">This week</h1>
       <span class="header-span"></span>
-      <div class="unit-toggle-button selected-button" id="celsius-toggle"><p>°C</p></div>
-      <div class="unit-toggle-button" id="fahrenheit-toggle">°F</div>
+      <div class="unit-toggle-button selected-button" id="metric-toggle" (click)="toggleMetric()"><p>°C</p></div>
+      <div class="unit-toggle-button" id="imperial-toggle" (click)="toggleImperial()"><p>°F</p></div>
     </div>
     <div class="week-section-body">
       <!-- <div class="small-container">Today</div> -->
       <div class="small-container">
         <p class="small-container-title">{{ weatherData.list[0].dt_txt | date: 'EEE' }}</p>
         <img [src]="'assets/WeatherIcons/' + getWeatherIcon(weatherData.list[0].weather[0].main) + '.png'" />
-        <p class="small-container-info">{{ weatherData.list[0].main.temp_min | number: "1.0-0" }}-{{ weatherData.list[0].main.temp_max | number: "1.0-0" }}°C</p>
+        <p class="small-container-info">{{ weatherData.list[0].main.temp_min | number: "1.0-0" }}-{{ weatherData.list[0].main.temp_max | number: "1.0-0" }}°{{ units === 'metric' ? 'C' : 'F' }}</p>
       </div>
       <div class="small-container">
         <p class="small-container-title">{{ weatherData.list[5].dt_txt | date: 'EEE' }}</p>
         <img [src]="'assets/WeatherIcons/' + getWeatherIcon(weatherData.list[5].weather[0].main) + '.png'" />
-        <p class="small-container-info">{{ weatherData.list[1].main.temp_min | number: "1.0-0" }}-{{ weatherData.list[5].main.temp_max | number: "1.0-0" }}°C</p>
+        <p class="small-container-info">{{ weatherData.list[1].main.temp_min | number: "1.0-0" }}-{{ weatherData.list[5].main.temp_max | number: "1.0-0" }}°{{ units === 'metric' ? 'C' : 'F' }}</p>
       </div>
       <div class="small-container">
         <p class="small-container-title">{{ weatherData.list[13].dt_txt | date: 'EEE' }}</p>
         <img [src]="'assets/WeatherIcons/' + getWeatherIcon(weatherData.list[13].weather[0].main) + '.png'" />
-        <p class="small-container-info">{{ weatherData.list[9].main.temp_min | number: "1.0-0" }}-{{ weatherData.list[13].main.temp_max | number: "1.0-0" }}°C</p>
+        <p class="small-container-info">{{ weatherData.list[9].main.temp_min | number: "1.0-0" }}-{{ weatherData.list[13].main.temp_max | number: "1.0-0" }}°{{ units === 'metric' ? 'C' : 'F' }}</p>
       </div>
       <div class="small-container">
         <p class="small-container-title">{{ weatherData.list[21].dt_txt | date: 'EEE' }}</p>
         <img [src]="'assets/WeatherIcons/' + getWeatherIcon(weatherData.list[21].weather[0].main) + '.png'" />
-        <p class="small-container-info">{{ weatherData.list[17].main.temp_min | number: "1.0-0" }}-{{ weatherData.list[21].main.temp_max | number: "1.0-0" }}°C</p>
+        <p class="small-container-info">{{ weatherData.list[17].main.temp_min | number: "1.0-0" }}-{{ weatherData.list[21].main.temp_max | number: "1.0-0" }}°{{ units === 'metric' ? 'C' : 'F' }}</p>
       </div>
       <div class="small-container">
         <p class="small-container-title">{{ weatherData.list[29].dt_txt | date: 'EEE' }}</p>
         <img [src]="'assets/WeatherIcons/' + getWeatherIcon(weatherData.list[29].weather[0].main) + '.png'" />
-        <p class="small-container-info">{{ weatherData.list[25].main.temp_min | number: "1.0-0" }}-{{ weatherData.list[29].main.temp_max | number: "1.0-0" }}°C</p>
+        <p class="small-container-info">{{ weatherData.list[25].main.temp_min | number: "1.0-0" }}-{{ weatherData.list[29].main.temp_max | number: "1.0-0" }}°{{ units === 'metric' ? 'C' : 'F' }}</p>
       </div>
       <div class="small-container">
         <p class="small-container-title">{{ weatherData.list[37].dt_txt | date: 'EEE' }}</p>
         <img [src]="'assets/WeatherIcons/' + getWeatherIcon(weatherData.list[37].weather[0].main) + '.png'" />
-        <p class="small-container-info">{{ weatherData.list[33].main.temp_min | number: "1.0-0" }}-{{ weatherData.list[37].main.temp_max | number: "1.0-0" }}°C</p>
+        <p class="small-container-info">{{ weatherData.list[33].main.temp_min | number: "1.0-0" }}-{{ weatherData.list[37].main.temp_max | number: "1.0-0" }}°{{ units === 'metric' ? 'C' : 'F' }}</p>
       </div>
 
 
@@ -147,7 +212,7 @@
         <div class="medium-container">
           <p class="medium-container-title">Wind status</p>
           <img src="assets/WeatherIcons/Wind icons.png" />
-          <h2>{{ weatherData.list[0].wind.speed}} km/h</h2>
+          <h2>{{ (weatherData.list[0].wind.speed * (units === 'metric' ? 3.6 : 1)).toFixed(2) }} {{ units === 'metric' ? 'km/h' : 'mph' }}</h2>
         </div>
         <div class="medium-container">
           <p class="medium-container-title">Visibility</p>
