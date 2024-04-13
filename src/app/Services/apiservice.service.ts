@@ -5,6 +5,15 @@ import { WeatherDataResponse } from '../Interfaces/weather.interfaces';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+interface DailyForecast {
+  dt: number;
+  temp: {
+    min: number;
+    max: number;
+  };
+  weather: { main: string; icon: string }[];
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -13,7 +22,7 @@ export class APIserviceService {
   // can be replaced by environments file
   weatherApiBaseUrl='http://api.openweathermap.org/data/2.5/forecast'
 
-  apikey= 'InsertAPIKeyHere'
+  apikey= '371bc94e91064242c1adbafb246bcd73'
   daycount = '48';
 
   constructor(private http: HttpClient) { }

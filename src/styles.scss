@@ -4,6 +4,7 @@
   --mywhite: #fff;
   --yellow-1: #f5c518;
   --grey-1: #ededed;
+  --accent-cyan: rgba(225, 255, 255, 0.8);
   --shadow-dark: rgba(0, 0, 0, 0.3);
   --shadow-light: rgba(255, 255, 255, 0.1);
   --main-font: Open Sans, sans-serif;
@@ -183,7 +184,6 @@ background-color: rgb(255, 255, 255, 0.9);
   background-color: #ececec;
 }
 
-//note: the stupid google symbol keeps messing with my css. I should definitly find an alternative.
 
 .search-input {
   font-family: "Lexend", sans-serif;
@@ -246,7 +246,10 @@ background-color: rgb(255, 255, 255, 0.9);
 }
 
 .more-info-label {
+  margin-top:20%;
   align-self: center;
+  font-family: var(--font-2);
+  font-size: 20px;
   // color: var(--mywhite);
 }
 
@@ -255,7 +258,7 @@ background-color: rgb(255, 255, 255, 0.9);
   background-color: var(--shadow-light);
   border-bottom-left-radius: 50px;
   border-bottom-right-radius: 50px;
-  margin-top: 1em;
+  // margin-top: 1em;
 
   display: flex;
   flex-direction: row;
@@ -274,11 +277,12 @@ background-color: rgb(255, 255, 255, 0.9);
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-family: var(--main-font);
+  font-family: var(--font-2);
+  font-size: 20px;
 }
 
 .info-block-label img {
-  width: 2em;
+  width: 3em;
 }
 
 .info-block-label span {
@@ -291,9 +295,11 @@ background-color: rgb(255, 255, 255, 0.9);
   // color: var(--mywhite);
   width: 50%;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
+  text-align: center;
   align-items: center;
   font-family: var(--font-2);
+  font-size: 20px;
 }
 
 .lower-data {
@@ -338,6 +344,9 @@ background-color: rgb(255, 255, 255, 0.9);
   margin-left:5px;
 }
 
+.unit-toggle-button p {
+  padding-right: 2.5px;
+}
 .selected-button {
   background-color: black;
 }
@@ -401,5 +410,6 @@ background-color: rgb(255, 255, 255, 0.9);
 
 .medium-container img {
   margin: 3%;
-  height: 38.5%;
+  max-height: 38.5%;
+  max-width: 38.5%;
 }
