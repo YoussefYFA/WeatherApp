@@ -19,10 +19,11 @@ interface DailyForecast {
 })
 export class APIserviceService {
   // definitions section
-  // can be replaced by environments file
-  weatherApiBaseUrl='http://api.openweathermap.org/data/2.5/forecast'
+  // I should later replace this with environments file
+  weatherApiBaseUrl='http://api.openweathermap.org/data/2.5/'
+  weatherApiBaseForecastUrl='http://api.openweathermap.org/data/2.5/forecast'
 
-  apikey= 'apiKey'
+
   daycount = '48';
 
   constructor(private http: HttpClient) { }
@@ -30,14 +31,14 @@ export class APIserviceService {
   
   getForecast(city: string, units: string) {
 
-    const URL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&cnt=${this.daycount}&appid=${this.apikey}&units=${units}`
+    const URL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&cnt=${this.daycount}&units=${units}`
   
     return this.http.get<any>(URL);
   }
 
   getLocationWeather(latitude: number, longitude: number, units: string) {
   
-    const URL = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&cnt=${this.daycount}&appid=${this.apikey}&units=${units}`;
+    const URL = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&cnt=${this.daycount}&units=${units}`;
 
     return this.http.get<any>(URL);
   }

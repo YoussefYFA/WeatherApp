@@ -14,12 +14,14 @@ import { Inject } from '@angular/core';
   templateUrl: './weather-dial.component.html',
   styleUrl: './weather-dial.component.scss',
 })
+
 export class WeatherDialComponent implements OnInit {
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private weatherService: APIserviceService
   ) {}
 
+  // global declarations section
   searchValue: string = '';
   searchValue2: string = '';
 
@@ -36,14 +38,11 @@ export class WeatherDialComponent implements OnInit {
 
   units = 'metric';
 
-
-  
-
-
   secondCityVisible = false;
 
   // First Weather state
   ngOnInit(): void {
+    //note to self: void is a function type that doesnt have a return value
     this.weatherService.getForecast(this.city, this.units).subscribe({
       next: (data) => {
         this.weatherData = data;
@@ -52,16 +51,11 @@ export class WeatherDialComponent implements OnInit {
 
         this.transformedData = this.transformForecastData(data);
         console.log('Transformed weather data:', this.transformedData);
-
       },
     });
   }
 
-  // check window width
-  isWindowWidthAbove800(): boolean {
-    return this.document.defaultView!.innerWidth > 800;
-  }
-
+  // Website functions
   getWeatherBySearch(searchValue: string) {
     console.log(searchValue);
     this.city = searchValue;
@@ -98,23 +92,6 @@ export class WeatherDialComponent implements OnInit {
     } else {
       console.log('Geolocation is not supported by this browser.');
     }
-  }
-
-  getWeatherIcon(weather: string): string {
-    const lowercaseWeather = weather.toLowerCase();
-
-    if (!weather) {
-      return 'default-icon'; // Return a default image if weather is undefined
-    }
-    const weatherIconMap: any = {
-      clear: 'Sun icons2',
-      rain: 'Rainy cloud icons2',
-      snow: 'Snow cloud icons2',
-      clouds: 'Cloud icons2',
-      drizzle: 'Icons of the Sun behind the Rainy Cloud',
-      thunderstorm: 'Heavy rain icons2',
-    };
-    return weatherIconMap[lowercaseWeather] || 'Rainbow Icons Behind Clouds'; // default-icon can be a placeholder image
   }
 
   // Code for second city: add, remove, weather location 2, weathersearch2
@@ -191,6 +168,31 @@ export class WeatherDialComponent implements OnInit {
     }
   }
 
+  // this section has multiple calculations for general use in the app
+
+  // check window width for use in html expressions
+  isWindowWidthAbove800(): boolean {
+    return this.document.defaultView!.innerWidth > 800;
+  }
+
+  // this code section decides which icon is used for each weather state(ex: rain, clouds, clear...)
+  getWeatherIcon(weather: string): string {
+    const lowercaseWeather = weather?.toLowerCase();
+
+    if (!weather) {
+      return 'default-icon'; // Return a default image if weather is undefined
+    }
+    const weatherIconMap: any = {
+      clear: 'Sun icons2',
+      rain: 'Rainy cloud icons2',
+      snow: 'Snow cloud icons2',
+      clouds: 'Cloud icons2',
+      drizzle: 'Icons of the Sun behind the Rainy Cloud',
+      thunderstorm: 'Heavy rain icons2',
+    };
+    return weatherIconMap[lowercaseWeather] || 'Rainbow Icons Behind Clouds'; // default-icon can be a placeholder image
+  }
+
   // toggles between metric and imperial. Works for both city and city2
 
   toggleMetric() {
@@ -239,31 +241,29 @@ export class WeatherDialComponent implements OnInit {
 
   // week forecast section
   // this code section calculates the minimum and maximum temperature of each day based
-  // on 8 different forecasts for the same day. The 8 part is due to the openWeatherAPI data structure
+  // on 8 different forecasts for the same day. The 8 part is due to the openWeather API data structure
 
- transformForecastData(weatherData: any) {
-
-  
+  transformForecastData(weatherData: any) {
     const transformedData: any = [];
 
-    console.log("data transforming...");
+    console.log('data transforming...');
 
     weatherData.list.forEach((dataPoint: any) => {
-      // Extract the date from the `dt_txt` property
       const date = new Date(dataPoint.dt_txt);
-  
-      // Get the day of the week (0 for Sunday, 6 for Saturday)
+
+      // getDay method returns the day of the week as a number.
+      // useful for use in the find method
       const dayOfWeek = date.getDay();
 
       const dayName = date.toLocaleDateString('en-US', { weekday: 'short' });
 
       const main = dataPoint.weather[0].main;
-  
-      // Find the object in the `transformedData` array that corresponds to the current day of the week
+
+      // find method finds the object in the `transformedData` array that corresponds to the current day of the week
       let dayObject = transformedData.find((obj: any) => obj.day === dayOfWeek);
-  
-      // If no object exists for the current day, create a new one, and
-      // set low bar for the highest and lowest temp
+
+      // If no object exists for the current day, this creates a new one, and
+      // sets a low bar for the highest and lowest temp
       if (!dayObject) {
         dayObject = {
           day: dayOfWeek,
@@ -275,16 +275,20 @@ export class WeatherDialComponent implements OnInit {
         };
         transformedData.push(dayObject);
       }
-      
-      dayObject.times.push(dataPoint.dt_txt);
-      // compares current highest max_temp (-infinity) with current loop max_temp, and 
-      // sets new value for highest_max_temp
-      dayObject.highest_max_temp = Math.max(dayObject.highest_max_temp, dataPoint.main.temp_max);
-      dayObject.lowest_min_temp = Math.min(dayObject.lowest_min_temp, dataPoint.main.temp_min);
-    });
-  
-    return transformedData;
-    
-  }
 
+      dayObject.times.push(dataPoint.dt_txt);
+      // compares current highest max_temp (-infinity) with current loop max_temp, and
+      // sets new value for highest_max_temp
+      dayObject.highest_max_temp = Math.max(
+        dayObject.highest_max_temp,
+        dataPoint.main.temp_max
+      );
+      dayObject.lowest_min_temp = Math.min(
+        dayObject.lowest_min_temp,
+        dataPoint.main.temp_min
+      );
+    });
+
+    return transformedData;
+  }
 }

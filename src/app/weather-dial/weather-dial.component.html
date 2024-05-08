@@ -29,12 +29,12 @@
 
     <!-- Today's weather section -->
     <div class="weather-visualization">
-      <img [src]="'assets/WeatherIcons/' + getWeatherIcon(weatherData.list[0].weather[0].main) + '.png'" />
+      <img [src]="'assets/WeatherIcons/' + getWeatherIcon(weatherData?.list[0].weather[0].main) + '.png'" />
     </div>
     <div class="main-info-container">
-      <h1 class="temp-h1">{{ weatherData.list[0].main.temp | number: "1.0-0" }}°{{ units === 'metric' ? 'C' : 'F' }}</h1>
+      <h1 class="temp-h1">{{ weatherData?.list[0].main.temp | number: "1.0-0" }}°{{ units === 'metric' ? 'C' : 'F' }}</h1>
       <h1 class="city-h1">{{ city }}</h1>
-      <h3>{{ weatherData.list[0].dt_txt | date: 'EEEE, h a' }}</h3>
+      <h3>{{ weatherData?.list[0].dt_txt | date: 'EEEE, h a' }}</h3>
       
       <br />
       <hr class="rounded" />
@@ -43,7 +43,7 @@
 
     <!-- Lower section of the card -->
     <div class="lower-data">
-      <h4 class="more-info-label">{{weatherData.list[0].weather[0].main}}</h4>
+      <h4 class="more-info-label">{{weatherData?.list[0].weather[0].main}}</h4>
       <div class="more-info-container">
 
         <!-- Minimum temp block -->
@@ -51,7 +51,7 @@
           <div class="info-block-label">
             <img src="assets/WeatherIcons/Cold Temperature Icons2.png" />
           </div>
-          <div class="info-block-value">MIN<br>{{ weatherData.list[0].main.temp_min | number: "1.0-0" }}°{{ units === 'metric' ? 'C' : 'F' }}</div>
+          <div class="info-block-value">MIN<br>{{ weatherData?.list[0].main.temp_min | number: "1.0-0" }}°{{ units === 'metric' ? 'C' : 'F' }}</div>
         </div>
 
         <!-- Maximum temp block -->
@@ -59,7 +59,7 @@
           <div class="info-block-label">
             <img src="assets/WeatherIcons/Hot Temperature Icons2.png" />
           </div>
-          <div class="info-block-value">MAX<br>{{ weatherData.list[0].main.temp_max | number: "1.0-0"}}°{{ units === 'metric' ? 'C' : 'F' }}</div>
+          <div class="info-block-value">MAX<br>{{ weatherData?.list[0].main.temp_max | number: "1.0-0"}}°{{ units === 'metric' ? 'C' : 'F' }}</div>
         </div>
 
         <!-- Humidity block
@@ -68,7 +68,7 @@
             <img src="assets/WeatherIcons/Rainy cloud icons2.png" />
             <span>Humidity</span>
           </div>
-          <div class="info-block-value">{{ weatherData.list[0].main.humidity}}%</div>
+          <div class="info-block-value">{{ weatherData?.list[0].main.humidity}}%</div>
         </div>
 
         Windspeed block
@@ -77,7 +77,7 @@
             <img src="assets/WeatherIcons/Wind Icons with Clouds.png" />
             <span>Wind</span>
           </div>
-          <div class="info-block-value">{{ weatherData.list[0].wind.speed}} km/h</div>
+          <div class="info-block-value">{{ weatherData?.list[0].wind.speed}} km/h</div>
         </div> -->
       </div>
     </div>
@@ -189,7 +189,6 @@
         <img [src]="'assets/WeatherIcons/' + getWeatherIcon(transformedData[4].main) + '.png'" />
         <p class="small-container-info">{{ transformedData[4].lowest_min_temp | number: "1.0-0" }}-{{ transformedData[4].highest_max_temp  | number: "1.0-0" }}°{{ units === 'metric' ? 'C' : 'F' }}</p>
       </div>
-
       <div class="small-container" *ngIf="transformedData[5]">
         <p class="small-container-title">{{ transformedData[5].dayname }}</p>
         <img [src]="'assets/WeatherIcons/' + getWeatherIcon(transformedData[5].main) + '.png'" />
@@ -199,7 +198,7 @@
 
     </div>
 
-    <!-- This third section is the bottom right part of the card "Today's highlights"
+    <!-- This third section is the bottom right part of the card: "Today's highlights"
         note that it is called a section but is not an actual section element-->
 
     <div class="highlights-section">
@@ -210,33 +209,33 @@
         <div class="medium-container">
           <p class="medium-container-title">Feels like</p>
           <img src="assets/WeatherIcons/feels_like_sparkle.svg" />
-          <h2>{{ weatherData.list[0].main.feels_like | number: "1.0-0"}}°{{ units === 'metric' ? 'C' : 'F' }}</h2>          
+          <h2>{{ weatherData?.list[0].main.feels_like | number: "1.0-0"}}°{{ units === 'metric' ? 'C' : 'F' }}</h2>          
         </div>
         <div class="medium-container">
           <p class="medium-container-title">Humidity</p>
           <img src="assets/WeatherIcons/Humidity.png" />
-          <h2>{{ weatherData.list[0].main.humidity}}%</h2>
+          <h2>{{ weatherData?.list[0].main.humidity}}%</h2>
         </div>
 
         <div class="medium-container">
           <p class="medium-container-title">Visibility</p>
           <img src="assets/WeatherIcons/Solar eclipse icon.png" />
-          <h2>{{ weatherData.list[0].visibility / 1000}} km</h2>
+          <h2>{{ weatherData?.list[0].visibility / 1000}} km</h2>
         </div>
         <div class="medium-container">
           <p class="medium-container-title">Wind status</p>
           <img src="assets/WeatherIcons/Wind icons.png" />
-          <h2>{{ (weatherData.list[0].wind.speed * (units === 'metric' ? 3.6 : 1)).toFixed(2) }} {{ units === 'metric' ? 'km/h' : 'mph' }}</h2>
+          <h2>{{ (weatherData?.list[0].wind.speed * (units === 'metric' ? 3.6 : 1)).toFixed(2) }} {{ units === 'metric' ? 'km/h' : 'mph' }}</h2>
         </div>
 
         <div class="medium-container"><p class="medium-container-title">Pressure</p>
         <img src="assets/WeatherIcons/pressure_gauge.svg" />
-        <h2>{{ weatherData.list[0].main.grnd_level }} hPa</h2>
+        <h2>{{ weatherData?.list[0].main.grnd_level }} hPa</h2>
       </div>
 
         <div class="medium-container"><p class="medium-container-title">Pressure at Sea level</p>
         <img src="assets/WeatherIcons/water-wave-icon.svg" />
-        <h2>{{ weatherData.list[0].main.sea_level }} hPa</h2>
+        <h2>{{ weatherData?.list[0].main.sea_level }} hPa</h2>
       </div>
         
       </div>
